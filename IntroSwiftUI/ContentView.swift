@@ -17,6 +17,7 @@ struct Person: Identifiable {
 
 struct ContentView: View {
   
+    // Takes in an struct of type Person
     let persons: [Person] = [Person(firstName: "Bruce", lastName: "Banner"), Person(firstName: "Steve", lastName: "Rodgers"), Person(firstName: "Black", lastName: "Widow")]
     
     var body: some View {
@@ -37,7 +38,7 @@ struct ContentView: View {
                     }
                     */
                     
-                    // Widget
+                   
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(persons) { person in
                             PersonView(person: person)
@@ -46,21 +47,20 @@ struct ContentView: View {
                     
                     
                     
-                    
                     // To be able to navigate, we need a navigation link. Navigationlink is like a button
-                    NavigationLink(destination: SecondScreenView(), label: {
+               /*   NavigationLink(destination: SecondScreenView(), label: {
                         HStack {
                             Text("Navigate").foregroundColor(.white).frame(width: 200, height: 40).background(.black).cornerRadius(10).padding(10)
                         }
-                    })
-                   /* Button
+                    }) */
+              
                         Button(action: {
                             print("Button pressed")}, label:
                                 {
                                 HStack {
-                                    Text("Navigate").foregroundColor(.white).frame(width: 200, height: 40).background(.black).cornerRadius(10).padding(10)
+                                    Text("Press me").foregroundColor(.white).frame(width: 200, height: 40).background(.black).cornerRadius(10).padding(10)
                                 }
-                            })  */
+                            })
                     }
             }
         }
@@ -70,22 +70,29 @@ struct ContentView: View {
 struct PersonView: View {
     
     var person: Person
-
-     
+    
     var body: some View {
-        HStack(alignment: .center) {
-            Image(systemName: "person.circle")
-            Text("\(person.firstName) \(person.lastName)").foregroundColor(.black)
-            
-        }
         
+        
+        // Wrap all person content in a NavLink to be able to click on each name to get to SecondScreenView
+      
+     NavigationLink(destination: SecondScreenView(person: person), label: {
+            HStack(alignment: .center) {
+                Image(systemName: "person.circle")
+                Text("\(person.firstName) \(person.lastName)").foregroundColor(.black)
+            }})
     }
 }
 
+
 struct SecondScreenView: View {
+    
+    var person: Person
+    
     var body: some View {
         VStack {
-            Text("Welcome to the Second view")
+            Text("Welcome \(person.firstName) \(person.lastName)!")
+            //Text("Welcome to second screen!")
         }
     }
 }
